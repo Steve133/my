@@ -1,0 +1,8 @@
+	
+  <delete id="deleteByPrimaryKeys">
+    delete from tb_shop
+    where id in 
+    	<foreach collection="array" item="item" index="index" open="(" separator="," close=")" >
+    		#{item}
+    	</foreach>
+  </delete>

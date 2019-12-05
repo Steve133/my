@@ -1,0 +1,35 @@
+客户端															服务端
+																
+																创建socket服务,监听8080端口
+																ServerSocket server = new ServerSocket(8080);
+																Socket socket = server.accept();
+连接服务端socket
+Socket socket = new Socket("127.0.0.1", 8080);
+向socket发送数据
+out = socket.getOutputStream();
+out.write(byte[] b, int off, int len)
+out.flush();
+socket.shutdownOutput();//关闭输出流通道
+//这里如果(out.close();//客户端socket连接同时关闭)
+																InputStream in = socket.getInputStream();
+																读取客户端发来的数据
+																byte[] bytes = new byte[1024];//(接收长度1024，单不一定能接收到1024，真是长度为len)
+																int len = in.read(bytes)//读取数据（阻塞），如果客户端不关闭输出流通道会一直阻塞
+																读取数据结束
+	
+																服务端处理数据
+																
+																// 回写数据
+																OutputStream out = socket.getOutputStream();
+																String massage = 返回数据
+																out.write(massage.getBytes());
+																out.flush();
+//接收数据
+InputStream in = socket.getInputStream();
+socket.getInputStream()
+
+in.close()														in.close()
+out.close()														out.close()
+
+
+

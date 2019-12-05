@@ -1,0 +1,17 @@
+demo1
+根据老付做的服务，数据长度在254-258字节的包体
+
+
+
+demo2	
+传入固定结构长度的结构数据，使用自定义解密器，编码器处理流数据
+
+
+demo3	Netty之粘包分包
+客户端在一个for循环内连续发送1000个hello给Netty服务器端,
+而在服务器端接受到的信息并不是预期的1000个独立的Hello字符串.实际上是无序的hello字符串混合在一起, 如图所示. 这种现象我们称之为粘包.
+pipeline管道数据传递   nettyServer自定义解密器  socketClient分发数据
+
+
+demo4
+pipeline管道数据可传递。   服务端：nettyServer；客户端：socketClient

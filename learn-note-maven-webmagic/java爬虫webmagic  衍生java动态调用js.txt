@@ -1,0 +1,84 @@
+webmagic中文API文档	 http://webmagic.io/docs/zh/posts/ch4-basic-page-processor/selectable.html
+
+
+
+xpath(String xpath)							使用XPath选择				html.xpath("//div[@class='title']")
+$(String selector)							使用Css选择器选择			html.$("div.title")
+$(String selector,String attr)				使用Css选择器选择			html.$("div.title","text")
+css(String selector)						功能同$()，使用Css选择器选择	html.css("div.title")
+links()										选择所有链接				html.links()
+regex(String regex)							使用正则表达式抽取			html.regex("\(.*?)\")
+regex(String regex,int group)				使用正则表达式抽取，并指定捕获组	html.regex("\(.*?)\",1)
+replace(String regex, String replacement)	替换内容					html.replace("\","")
+
+
+get()			返回一条String类型的结果				String link= html.links().get()
+toString()		功能同get()，返回一条String类型的结果	String link= html.links().toString()
+all()			返回所有抽取结果					List links= html.links().all()
+match()			是否有匹配结果						if (html.links().match()){ xxx; }
+
+
+create(PageProcessor)		创建Spider					Spider.create(new GithubRepoProcessor())
+addUrl(String…)				添加初始的URL					spider.addUrl("http://webmagic.io/docs/")
+addRequest(Request...)		添加初始的Request				spider.addRequest("http://webmagic.io/docs/")
+thread(n)					开启n个线程					spider.thread(5)
+run()						启动，会阻塞当前线程执行			spider.run()
+start()/runAsync()			异步启动，当前线程继续执行			spider.start()
+stop()						停止爬虫						spider.stop()
+test(String)				抓取一个页面进行测试				spider.test("http://webmagic.io/docs/")
+addPipeline(Pipeline)		添加一个Pipeline，一个Spider可以有多个Pipeline	spider.addPipeline(new ConsolePipeline())
+setScheduler(Scheduler)		设置Scheduler，一个Spider只能有个一个Scheduler	spider.setScheduler(new RedisScheduler())
+setDownloader(Downloader)	设置Downloader，一个Spider只能有个一个Downloader	spider.setDownloader(new SeleniumDownloader())
+get(String)					同步调用，并直接取得结果			ResultItems result = spider.get("http://webmagic.io/docs/")
+getAll(String…)				同步调用，并直接取得一堆结果		List<ResultItems> results = spider.getAll("http://webmagic.io/docs/", "http://webmagic.io/xxx")
+
+
+setCharset(String)			设置编码						site.setCharset("utf-8")
+setUserAgent(String)		设置UserAgent				site.setUserAgent("Spider")
+setTimeOut(int)				设置超时时间，单位是毫秒			site.setTimeOut(3000)
+setRetryTimes(int)			设置重试次数					site.setRetryTimes(3)
+setCycleRetryTimes(int)		设置循环重试次数				site.setCycleRetryTimes(3)
+addCookie(String,String)	添加一条cookie				site.addCookie("dotcomt_user","code4craft")
+setDomain(String)			设置域名，需设置域名后，addCookie才可生效	site.setDomain("github.com")
+addHeader(String,String)	添加一条addHeader				site.addHeader("Referer","https://github.com")
+setHttpProxy(HttpHost)		设置Http代理					site.setHttpProxy(new HttpHost("127.0.0.1",8080))
+
+
+
+摘自https://www.jianshu.com/p/df41ee01ca07
+基本语法
+	节点选取
+		直接使用节点名称：选取当前节点的所有子节点		div						选取 div 元素的所有子节点。
+		/		从根节点开始选取（绝对路径）		/html/					选取根元素html
+		//		从匹配到的节点选取（相对路径）		//span					选取所有 span 子元素，而不管它们在文档中的位置。
+		.		选取当前节点					//div[@id ='root']/.
+		..		选取当前节点的父节点				//div[@id ='root']/..
+		@		选取属性						//@href
+	    
+	    
+	    
+	谓语[ ]
+    	/li/span[1]							选取属于 li 子元素的第一个 span 元素
+		/li/span[last()]					选取属于 li 子元素的最后一个 span 元素
+		/li/span[last()-1]					选取属于 li 子元素的倒数第二个 span 元素
+		/li/span[position()<3]				选取最前面的两个属于 li 元素的子元素的 span 元素
+		//li[@href]							选取所有拥有名为 href 的属性的 li 元素。
+		//li[@href='XXXX']					选取所有 li 元素，且这些元素拥有值为 XXXX 的 href 属性。
+		/li/span[data>35.00]				选取 li 元素的所有 span 元素，且其中的 data 元素的值须大于 35.00。
+		/li/span[data>35.00]/span			选取 li 元素中的 span 元素的所有 span 元素，且其中的 data 元素的值须大于 35.00。
+		
+		*			匹配任何元素节点。		/li/*	选取 li 元素的所有子元素。
+		@*			匹配任何属性节点。		//span[@*]		选取所有带有属性的 span 元素。
+		node()		匹配任何类型的节点。
+	
+		//li/span | //li/p			选取 li 元素的所有 span 和 p 元素。
+		
+		
+		
+		
+		
+		
+		
+		
+		
+    

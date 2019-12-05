@@ -1,0 +1,69 @@
+测试
+java -jar -Xms1000m -Xmx1000m learn-note-maven-visualVM-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod --server.port=8080
+Xms：设置JVM最大可用内存为100M
+Xmx：设置JVM促使内存为100m，此值设置与-Xmx相同
+XX:PermSize：设置持久代大小
+XX:MaxPermSize：设置持久代最大上限大小
+
+典型设置：
+java -Xmx3550m -Xms3550m -Xmn2g –Xss128k
+	-Xmx3550m：设置JVM最大可用内存为3550M。
+	-Xms3550m：设置JVM促使内存为3550m。此值可以设置与-Xmx相同，以避免每次垃圾回收完成后JVM重新分配内存。
+	-Xmn2g：设置年轻代大小为2G。整个堆大小=年轻代大小 + 年老代大小 + 持久代大小。持久代一般固定大小为64m，所以增大年轻代后，将会减小年老代大小。此值对系统性能影响较大，Sun官方推荐配置为整个堆的3/8。
+	-Xss128k：设置每个线程的堆栈大小。JDK5.0以后每个线程堆栈大小为1M，以前每个线程堆栈大小为256K。更具应用的线程所需内存大小进行调整。在相同物理内存下，减小这个值能生成更多的线程。但是操作系统对一个进程内的线程数还是有限制的，不能无限生成，经验值在3000~5000左右。
+
+java -Xmx3550m -Xms3550m -Xss128k -XX:NewRatio=4 -XX:SurvivorRatio=4 -XX:MaxPermSize=16m -XX:MaxTenuringThreshold=0
+	-XX:NewRatio=4:设置年轻代（包括Eden和两个Survivor区）与年老代的比值（除去持久代）。设置为4，则年轻代与年老代所占比值为1：4，年轻代占整个堆栈的1/5
+	-XX:SurvivorRatio=4：设置年轻代中Eden区与Survivor区的大小比值。设置为4，则两个Survivor区与一个Eden区的比值为2:4，一个Survivor区占整个年轻代的1/6
+	-XX:MaxPermSize=16m:设置持久代最大上限大小为16m。
+	-XX:MaxTenuringThreshold=0：设置垃圾最大年龄。如果设置为0的话，则年轻代对象不经过Survivor区，直接进入年老代。对于年老代比较多的应用，可以提高效率。如果将此值设置为一个较大值，则年轻代对象会在Survivor区进行多次复制，这样可以增加对象再年轻代的存活时间，增加在年轻代即被回收的概论。
+
+吞吐量优先的并行收集器
+典型配置：
+	java -Xmx3800m -Xms3800m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:ParallelGCThreads=20
+	-XX:+UseParallelGC：选择垃圾收集器为并行收集器。此配置仅对年轻代有效。即上述配置下，年轻代使用并发收集，而年老代仍旧使用串行收集。
+	-XX:ParallelGCThreads=20：配置并行收集器的线程数，即：同时多少个线程一起进行垃圾回收。此值最好配置与处理器数目相等。
+	
+	java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC -XX:ParallelGCThreads=20 -XX:+UseParallelOldGC
+	-XX:+UseParallelOldGC：配置年老代垃圾收集方式为并行收集。JDK6.0支持对年老代并行收集。
+	
+	java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC  -XX:MaxGCPauseMillis=100
+	-XX:MaxGCPauseMillis=100:设置每次年轻代垃圾回收的最长时间，如果无法满足此时间，JVM会自动调整年轻代大小，以满足此值。
+	
+响应时间优先的并发收集器
+典型配置：
+	java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:ParallelGCThreads=20 -XX:+UseConcMarkSweepGC -XX:+UseParNewGC
+	-XX:+UseConcMarkSweepGC：设置年老代为并发收集。测试中配置这个以后，-XX:NewRatio=4的配置失效了，原因不明。所以，此时年轻代大小最好用-Xmn设置。
+	-XX:+UseParNewGC: 设置年轻代为并行收集。可与CMS收集同时使用。JDK5.0以上，JVM会根据系统配置自行设置，所以无需再设置此值。
+	
+	java -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseConcMarkSweepGC -XX:CMSFullGCsBeforeCompaction=5 -XX:+UseCMSCompactAtFullCollection
+	-XX:CMSFullGCsBeforeCompaction：由于并发收集器不对内存空间进行压缩、整理，所以运行一段时间以后会产生“碎片”，使得运行效率降低。此值设置运行多少次GC以后对内存空间进行压缩、整理。
+	-XX:+UseCMSCompactAtFullCollection：打开对年老代的压缩。可能会影响性能，但是可以消除碎片
+	
+	
+=====================================================================================================================================================================================
+常见参数种类（配置内存）：（-Xms 、-Xmx、-XX:newSize、-XX:MaxnewSize、-Xmn）、（-XX:PermSize、-XX:MaxPermSize）。可以从列举的方式上看出我的用意，参数的配置是分组的，前者是用来配置堆区的，后者是用来配置非堆区的。
+第一组配置参数：-Xms 、-Xmx、-XX:newSize、-XX:MaxnewSize、-Xmn
+        1、-Xms ：表示java虚拟机堆区内存初始内存分配的大小，通常为操作系统可用内存的1/64大小即可，但仍需按照实际情况进行分配。有可能真的按照这样的一个规则分配时，设计出的软件还没有能够运行得起来就挂了。
+        2、-Xmx： 表示java虚拟机堆区内存可被分配的最大上限，通常为操作系统可用内存的1/4大小。但是开发过程中，通常会将 -Xms 与 -Xmx两个参数的配置相同的值，其目的是为了能够在java垃圾回收机制清理完堆区后不需要重新分隔计算堆区的大小而浪费资源。
+        一般来讲对于堆区的内存分配只需要对上述两个参数进行合理配置即可，但是如果想要进行更加精细的分配还可以对堆区内存进一步的细化，那就要用到下面的三个参数了-XX:newSize、-XX:MaxnewSize、-Xmn。
+        当然这源于对堆区的进一步细化分：新生代、中生代、老生代。java中每新new一个对象所占用的内存空间就是新生代的空间，当java垃圾回收机制对堆区进行资源回收后，那些新生代中没有被回收的资源将被转移到中生代，中生代的被转移到老生代。
+        而接下来要讲述的三个参数是用来控制新生代内存大小的。
+	    1、-XX:newSize：表示新生代初始内存的大小，应该小于 -Xms的值；
+	    2、-XX:MaxnewSize：表示新生代可被分配的内存的最大上限；当然这个值应该小于 -Xmx的值；
+	    3、-Xmn：至于这个参数则是对 -XX:newSize、-XX:MaxnewSize两个参数的同时配置，也就是说如果通过-Xmn来配置新生代的内存大小，那么-XX:newSize = -XX:MaxnewSize = -Xmn，虽然会很方便，但需要注意的是这个参数是在JDK1.4版本以后才使用的。
+上面所述即为java虚拟机对外提供的可配置堆区的参数，接下来讲述java虚拟机对非堆区内存配置的两个参数：
+	    1、-XX:PermSize：表示非堆区初始内存分配大小，其缩写为permanent size（持久化内存）
+	    2、-XX:MaxPermSize：表示对非堆区分配的内存的最大上限。
+        这里面非常要注意的一点是：在配置之前一定要慎重的考虑一下自身软件所需要的非堆区内存大小，因为此处内存是不会被java垃圾回收机制进行处理的地方。并且更加要注意的是 最大堆内存与最大非堆内存的和绝对不能够超出操作系统的可用内存。
+        
+
+
+
+
+
+
+
+
+
+

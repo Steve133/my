@@ -1,0 +1,62 @@
+http中文开发手册
+摘自https://cloud.tencent.com/developer/section/1189886
+
+Request Hearders
+Accept 告之HTTP的请求内容类型, 经过内容协商，服务器选其中一个内容类型，使用它并通过Content-Type响应头通知客户它的选择
+	指令
+  		image/*	将匹配image/png，image/svg，image/gif和任何其他的图像类型。
+  		*/*		任何 MIME 类型
+		;q=		（q因子权重）表示对格式的喜欢层度（0-1）例如application/xml;q=0.9,*/*;q=0.8，对application/xml喜欢层度为0.9，对*/*喜欢层度0.8
+
+Accept-Charset	告之HTTP的字符集，使用内容协商，服务器然后选择一个提议，使用它并在Content-Type响应头中通知客户它选择的内容
+如果服务器不能提供任何匹配的字符集，理论上可以发回一个406（不可接受的）错误代码
+	Accept-Charset: utf-8, iso-8859-1;q=0.5
+	utf-8或iso-8859-15.*的一个字符集
+	'*'被用作通配符
+	;q=（q因子权重）表示对格式的喜欢层度（0-1）
+
+Accept-Encoding	请求的 HTTP 标头通告其内容编码，通常是一个压缩算法中,默认是identity 
+	Accept-Encoding: deflate, gzip;q=1.0, *;q=0.5
+		gzip	使用 Lempel-Ziv 编码（ LZ77 ）的压缩格式，带有32位 CRC 。
+		compress	使用 Lempel-Ziv-Welch（ LZW ）算法的压缩格式。
+		deflate		使用 zlib 结构的压缩格式，以及 deflate 压缩算法。
+		br		使用 Brotli 算法的压缩格式。
+		identity(默认)	指示身份功能（即不压缩，也不修改）。即使不存在，该值始终被认为是可以接受的。
+		*		匹配尚未在标题中列出的任何内容编码。如果标题不存在，这是默认值。这并不意味着支持任何算法; 只是表示没有偏好。
+		;q=		（ q 值加权）任何值都按照称为权重的相对质量值的优先顺序排列。
+
+Accept-Language	请求的 HTTP 标头通告哪些语言客户端
+	当服务器无法通过另一种方式确定语言时，使用此标题是一种暗示，例如特定的 URL ，由明确的用户决定控制。
+	Accept-Language","zh-CN,zh;q=0.9,en;q=0.8
+		最常见的额外信息是国家变体（如'en-US'）或使用的字母类型（如'sr-Lat'）
+		*	任何语言; '*'被用作通配符。
+
+Access-Control-Allow-Origin	响应 header 指示是否该响应可以与具有给定资源共享原点。
+	Access-Control-Allow-Origin: *
+	如果服务器指定了原始主机而不是“ *”，那么它还必须包含Origin在Vary响应 header 中，以向客户机指出服务器响应将根据Origin请求 header 的值而有所不同。
+	Access-Control-Allow-Origin: https://developer.mozilla.org
+	Vary: Origin
+Connection	一般 header 控制网络连接是否保持打开状态，当前事务结束之后。如果发送的值是keep-alive，连接是持久的并且不关闭，从而允许对同一服务器的后续请求完成。
+	Connection: keep-alive
+	Connection: close	
+	close表示客户端或服务器想要关闭连接。这是 HTTP / 1.0 请求的默认值
+	keep-alive仅表示客户端想要保持连接处于打开状态。持久连接是 HTTP / 1.1 请求的默认连接
+Host	请求报头指定的服务器的域名（虚拟主机），和（可选地）的 TCP 端口上哪个服务器正在侦听数。
+	如果没有给出端口，则暗示所请求服务的默认端口
+Origin	请求报头指示其中从取起源。它不包含任何路径信息，但仅包含服务器名称
+Referer	请求头中包含以前的 web 页面，从中当前请求页面的链接，随后的地址
+User-Agent	用户代理的浏览器
+	User-Agent: <product> / <product-version> <comment>
+	User-Agent: Mozilla/<version> (<system-information>) <platform> (<platform-details>) <extensions>
+Upgrade-Insecure-Requests	让浏览器自动升级请求从http到https,用于大量包含http资源的http网页直接升级到https而不会报错
+
+Response Hearder
+Cache-Control: no-cache
+Content-Encoding: gzip
+Content-Length: 326
+Content-Type: application/json; charset=UTF-8
+Date: Wed, 18 Sep 2019 11:14:08 GMT
+Server: nginx
+Vary: Accept-Encoding	响应头决定如何满足未来的请求头，以决定一个缓存的响应是否可以使用，而不是请求从源服务器一个新的一个。服务器使用它来指示在内容协商算法中选择资源表示时使用哪个标头。
+	Vary: *
+	Vary: <header-name>, <header-name>, ...

@@ -1,0 +1,31 @@
+message-》types
+
+
+
+
+
+一个WSDL文档通常包含8个重要的元素，即definitions、types、import、message、portType、operation、binding、service元素。这些元素嵌套在definitions元素中，definitions是WSDL文档的根元素。
+
+definitions元素
+	所有的WSDL文档的根元素均是definitions元素。该元素封装了整个文档，同时通过其name提供了一个WSDL文档。
+types元素
+	WSDL采用了W3C XML模式内置类型作为其基本类型系统。
+	schemaLocation指向参数相亲页面！！重要
+import元素
+	import元素使得可以在当前的WSDL文档中使用其他WSDL文档中指定的命名空间中的定义元素。
+message元素
+	message元素描述了Web服务使用消息的有效负载。
+	定义了两个消息XXXX和XXXXResponse
+portType元素
+	portType元素定义了Web服务的抽象接口。
+	一个portType中可以定义多个operation，一个operation可以看作是一个方法
+binding
+	binding元素将一个抽象portType映射到一组具体协议(SOAO和HTTP)、消息传递样式、编码样式。
+	其中规定了在具体SOAP调用时，应当使用的soapAction是”xxx”，这个Action在WebService代码调用中是很重要的。
+service元素和port元素
+	service元素包含一个或者多个port元素，其中每个port元素表示一个不同的Web服务。port元素将URL赋给一个特定的binding，甚至可以使两个或者多个port元素将不同的URL赋值给相同的binding。
+
+
+
+
+

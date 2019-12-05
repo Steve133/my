@@ -1,0 +1,42 @@
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-dependency-plugin</artifactId>
+  <executions>
+    <execution>
+      <id>copy</id>
+      <phase>install</phase>
+      <goals>
+        <goal>copy-dependencies</goal>
+      </goals>
+      <configuration>
+        <outputDirectory>
+          ${project.build.directory}/lib
+        </outputDirectory>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+这中情况下会报错
+Artifact has not been packaged yet. When used on reactor artifact, copy should be executed after packaging: see MDEP-187.
+
+解决方法 Eclipse Window -> Preferences -> Maven -> Lifecycle Mappings点击Open workspace lifecycle mappings metadata，然后会打开一个文件，将下面内容复制进去，然后保存。
+<?xml version="1.0" encoding="UTF-8"?>
+<lifecycleMappingMetadata>
+  <pluginExecutions>
+    <pluginExecution>
+      <pluginExecutionFilter>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <versionRange>2.10</versionRange>
+        <goals>
+          <goal>copy-dependencies</goal>
+        </goals>
+      </pluginExecutionFilter>
+      <action>
+        <ignore />
+      </action>
+    </pluginExecution>
+  </pluginExecutions>
+</lifecycleMappingMetadata>
+
+保存完之后，点击Reload workspace lifecycle mappings metadata,就可以重新构建项目了

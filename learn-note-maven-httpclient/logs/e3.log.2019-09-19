@@ -1,0 +1,37 @@
+2019-09-19 12:50:48,133 ERROR - [cn.master.http.HttpClientUtils4v5.doGet(HttpClientUtils4v5.java:354)] - 请求返回状态非200：403
+java.lang.Exception: 请求返回状态非200：403
+	at cn.master.http.HttpClientUtils4v5.doGet(HttpClientUtils4v5.java:349)
+	at cn.master.http.HttpClientUtils4v5.test4(HttpClientUtils4v5.java:285)
+	at cn.master.http.HttpClientUtils4v5.main(HttpClientUtils4v5.java:299)
+2019-09-19 12:54:09,682 ERROR - [cn.master.http.HttpClientUtils4v5.doGet(HttpClientUtils4v5.java:354)] - Connect to nuexini.gq:443 [nuexini.gq/104.27.171.107, nuexini.gq/104.27.170.107] failed: Connection timed out: connect
+org.apache.http.conn.HttpHostConnectException: Connect to nuexini.gq:443 [nuexini.gq/104.27.171.107, nuexini.gq/104.27.170.107] failed: Connection timed out: connect
+	at org.apache.http.impl.conn.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:151)
+	at org.apache.http.impl.conn.PoolingHttpClientConnectionManager.connect(PoolingHttpClientConnectionManager.java:353)
+	at org.apache.http.impl.execchain.MainClientExec.establishRoute(MainClientExec.java:380)
+	at org.apache.http.impl.execchain.MainClientExec.execute(MainClientExec.java:236)
+	at org.apache.http.impl.execchain.ProtocolExec.execute(ProtocolExec.java:184)
+	at org.apache.http.impl.execchain.RetryExec.execute(RetryExec.java:88)
+	at org.apache.http.impl.execchain.RedirectExec.execute(RedirectExec.java:110)
+	at org.apache.http.impl.client.InternalHttpClient.doExecute(InternalHttpClient.java:184)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:82)
+	at org.apache.http.impl.client.CloseableHttpClient.execute(CloseableHttpClient.java:107)
+	at cn.master.http.HttpClientUtils4v5.doGet(HttpClientUtils4v5.java:347)
+	at cn.master.http.HttpClientUtils4v5.test4(HttpClientUtils4v5.java:285)
+	at cn.master.http.HttpClientUtils4v5.main(HttpClientUtils4v5.java:299)
+Caused by: java.net.ConnectException: Connection timed out: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:79)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at org.apache.http.conn.ssl.SSLConnectionSocketFactory.connectSocket(SSLConnectionSocketFactory.java:337)
+	at org.apache.http.impl.conn.DefaultHttpClientConnectionOperator.connect(DefaultHttpClientConnectionOperator.java:134)
+	... 12 more
+2019-09-19 15:32:22,469 ERROR - [cn.master.http.HttpClientUtils.doPost(HttpClientUtils.java:190)] - 请求【http://localhost:8080/】返回状态非200：404
+java.lang.Exception: 请求【http://localhost:8080/】返回状态非200：404
+	at cn.master.http.HttpClientUtils.doPost(HttpClientUtils.java:185)
+	at cn.master.http.HttpClientUtils.doPost(HttpClientUtils.java:224)
+	at cn.master.http.HttpCilentsTest.main(HttpCilentsTest.java:193)

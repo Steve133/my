@@ -1,0 +1,8 @@
+摘自 https://blog.csdn.net/weixin_43846510/article/details/89703564
+
+jacob 语音清晰支持中文，eclipse可直接运行  但要在windows下 放入dll
+
+
+
+freetts 语音不清晰，目测只支持英文，不能在eclipse里运行，
+freetts-1.2解压后要运行freetts-1.2\lib下jsapi.exe，会生成jsapi.jar，然后可以java -jar 测试\bin下jar文件

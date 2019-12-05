@@ -1,0 +1,36 @@
+
+
+元注解
+	元注解是可以注解到注解上的注解，或者说元注解是一种基本注解，但是它能够应用到其它的注解上面
+	元标签有 @Retention、@Documented、@Target、@Inherited、@Repeatable 5 种
+	
+	@Retention	Retention 的英文意为保留期的意思，解释说明了这个注解的的存活时间
+		RetentionPolicy.SOURCE 	注解只在源码阶段保留，在编译器进行编译时它将被丢弃忽视。
+		RetentionPolicy.CLASS 	注解只被保留到编译进行的时候，它并不会被加载到 JVM 中。
+		RetentionPolicy.RUNTIME 注解可以保留到程序运行的时候，它会被加载进入到 JVM 中，所以在程序运行时可以获取到它们。
+	
+	@Documented	它的作用是能够将注解中的元素包含到 Javadoc 中去
+	
+	@Target	指定了注解运用的地方
+		ElementType.ANNOTATION_TYPE 	可以给	一个注解  	进行注解
+		ElementType.CONSTRUCTOR 		可以给  	构造方法  	进行注解
+		ElementType.FIELD 				可以给  	属性  		进行注解
+		ElementType.LOCAL_VARIABLE 		可以给	局部变量	进行注解
+		ElementType.METHOD 				可以给	方法	进行注解
+		ElementType.PACKAGE 			可以给	一个包	进行注解
+		ElementType.PARAMETER 			可以给	一个方法内的参数进行注解
+		ElementType.TYPE 				可以给	一个类型	进行注解，比如类、接口、枚举
+		
+	@Inherited	继承的意思		父类或超类被 @Inherited注解的话，那么如果它的子类没有被任何注解应用的话，那么这个子类就继承了超类的注解
+	
+	@Repeatable 自然是可重复的意思
+
+
+注解的属性也叫做成员变量
+
+注解与反射		注解通过反射获取
+	isAnnotationPresent(Class<? extends Annotation> annotationClass)		判断它是否应用了annotationClass注解
+	getAnnotation(Class<A> annotationClass)									获取 Annotation 对象
+	getAnnotations()														获取 Annotation 对象
+	
+

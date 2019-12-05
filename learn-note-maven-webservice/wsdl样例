@@ -1,0 +1,73 @@
+<definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://service.zttc.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://service.zttc.org/" name="MyServiceImplService">
+	<types>
+		<xsd:schema>
+			<xsd:import namespace="http://service.zttc.org/" schemaLocation="http://localhost:8888/ns?xsd=1"/>
+		</xsd:schema>
+	</types>
+	<message name="add">
+		<part name="parameters" element="tns:add"/>
+	</message>
+	<message name="addResponse">
+		<part name="parameters" element="tns:addResponse"/>
+	</message>
+	<message name="login">
+		<part name="parameters" element="tns:login"/>
+	</message>
+	<message name="loginResponse">
+		<part name="parameters" element="tns:loginResponse"/>
+	</message>
+	<message name="minus">
+		<part name="parameters" element="tns:minus"/>
+	</message>
+	<message name="minusResponse">
+		<part name="parameters" element="tns:minusResponse"/>
+	</message>
+	<portType name="IMyService">
+		<operation name="add">
+			<input wsam:Action="http://service.zttc.org/IMyService/addRequest" message="tns:add"/>
+			<output wsam:Action="http://service.zttc.org/IMyService/addResponse" message="tns:addResponse"/>
+		</operation>
+		<operation name="login">
+			<input wsam:Action="http://service.zttc.org/IMyService/loginRequest" message="tns:login"/>
+		<output wsam:Action="http://service.zttc.org/IMyService/loginResponse" message="tns:loginResponse"/></operation>
+		<operation name="minus">
+			<input wsam:Action="http://service.zttc.org/IMyService/minusRequest" message="tns:minus"/>
+			<output wsam:Action="http://service.zttc.org/IMyService/minusResponse" message="tns:minusResponse"/>
+		</operation>
+	</portType>
+	<binding name="MyServiceImplPortBinding" type="tns:IMyService">
+		<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+		<operation name="add">
+			<soap:operation soapAction=""/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="login">
+			<soap:operation soapAction=""/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+		<operation name="minus">
+			<soap:operation soapAction=""/>
+			<input>
+				<soap:body use="literal"/>
+			</input>
+			<output>
+				<soap:body use="literal"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="MyServiceImplService">
+		<port name="MyServiceImplPort" binding="tns:MyServiceImplPortBinding">
+			<soap:address location="http://localhost:8888/ns"/>
+		</port>
+	</service>
+</definitions>

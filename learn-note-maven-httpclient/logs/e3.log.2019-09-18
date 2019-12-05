@@ -1,0 +1,8 @@
+2019-09-18 22:33:45,296 ERROR - [cn.master.http.HttpClientUtils.main(HttpClientUtils.java:110)] - / by zero
+java.lang.ArithmeticException: / by zero
+	at cn.master.http.HttpClientUtils.main(HttpClientUtils.java:108)
+2019-09-18 23:48:18,396 ERROR - [cn.master.http.HttpClientUtils.doGet(HttpClientUtils.java:307)] - 请求返回状态非200：403
+java.lang.Exception: 请求返回状态非200：403
+	at cn.master.http.HttpClientUtils.doGet(HttpClientUtils.java:302)
+	at cn.master.http.HttpClientUtils.test4(HttpClientUtils.java:246)
+	at cn.master.http.HttpClientUtils.main(HttpClientUtils.java:260)
