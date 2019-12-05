@@ -76,6 +76,12 @@
 			<artifactId>ezmorph</artifactId>
 			<version>1.0.3</version>
 		</dependency>
-
+    	
+    	<!-- fileUtils -->
+		<dependency>
+		    <groupId>commons-io</groupId>
+		    <artifactId>commons-io</artifactId>
+		    <version>2.6</version>
+		</dependency>
 	</dependencies>
 </project>
